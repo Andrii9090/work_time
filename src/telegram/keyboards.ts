@@ -1,4 +1,4 @@
-import { KeyboardButton } from "telegraf/types"
+import { KeyboardButton } from "node-telegram-bot-api"
 
 
 const keyStart: KeyboardButton = {
