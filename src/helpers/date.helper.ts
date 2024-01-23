@@ -1,19 +1,38 @@
 type converType = 'horas' | 'days' | 'minuts'
 
+
+const SECONDS_FOR_MINUTS = 60
+const MINUTS_FOR_HOUR = 60
+
 const converToLocalDate = (date: Date) => {
     const dateTime = date.toLocaleString(process.env.LOCALE, { timeZone: process.env.TIME_ZONE })
+    const dateTimeArr = dateTime.split(',')
+    let time = dateTimeArr[1].trim()
+    if (+time < 10) {
+        time = `0${time}`
+    }
     return {
-        date: dateTime.split(',')[0].trim(),
-        time: dateTime.split(',')[1].trim()
+        date: dateTimeArr[0].trim(),
+        time: time
     }
 }
 
-const getTimeTotal = (start: number, finish: number) => {
+const getTimeDiff = (start: number, finish: number) => {
     return finish - start
 }
 
-const convertMiliseconds = (diff: number, type: converType) => {
-    const seconds = diff / 1000
+const getHoursTotal = (miliseconds: number) => {
+    const timeOdj = new Date(miliseconds).toISOString().match(/\d\d:\d\d:\d\d/)
+    if (timeOdj)
+        return timeOdj[0]
 }
 
-export { converToLocalDate, getTimeTotal }
+const dateParser = (dateStr: string) => {
+    const dateArr = dateStr.split('-')
+    return {
+        start: dateArr[0].split('/'),
+        end: dateArr[1].split('/')
+    }
+}
+
+export { converToLocalDate, getHoursTotal, dateParser, getTimeDiff }
